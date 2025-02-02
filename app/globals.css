@@ -3,19 +3,145 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --background: #ffffff;
+  --foreground: #171717; */
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --background: 210 40% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 221 83% 53%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 191 97% 77%;
+  --accent-foreground: 222 47% 11%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 221 83% 53%;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: 222 47% 11%;
+  --foreground: 210 40% 98%;
+  --card: 223 47% 14%;
+  --card-foreground: 210 40% 98%;
+  --popover: 223 47% 14%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 217 32% 17%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217 32% 17%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 191 97% 77%;
+  --accent-foreground: 222 47% 11%;
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217 32% 17%;
+  --input: 217 32% 17%;
+  --ring: 224 76% 48%;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* --background: #0a0a0a;
+    --foreground: #ededed; */
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
   }
 }
 
 body {
-  color: var(--foreground);
   background: var(--background);
+  border-color: hsl(var(--border));
+  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.job-card-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.job-card-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity 300ms,
+    transform 300ms;
+}
+
+.job-card-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.job-card-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 300ms,
+    transform 300ms;
+}
+
+.truncate-2-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar,
+.scrollbar::-webkit-scrollbar,
+.scrollbar-thin::-webkit-scrollbar,
+.chakra-dialog__body::-webkit-scrollbar,
+.chakra-modal__body::-webkit-scrollbar,
+.select__content::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  @apply w-1 h-1;
+}
+
+::-webkit-scrollbar-corner {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-track,
+.scrollbar::-webkit-scrollbar-track,
+.scrollbar-thin::-webkit-scrollbar-track,
+.chakra-dialog__body::-webkit-scrollbar-track,
+.chakra-modal__body::-webkit-scrollbar-track,
+.select__content::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  @apply bg-[#A0AEC0];
+}
+
+::-webkit-scrollbar-thumb,
+.scrollbar::-webkit-scrollbar-thumb,
+.scrollbar-thin::-webkit-scrollbar-thumb,
+.chakra-dialog__body::-webkit-scrollbar-thumb,
+.chakra-modal__body::-webkit-scrollbar-thumb,
+.select__content::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  @apply bg-green-600 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover,
+.scrollbar::-webkit-scrollbar-thumb:hover,
+.scrollbar-thin::-webkit-scrollbar-thumb:hover,
+.chakra-dialog__body::-webkit-scrollbar-thumb:hover,
+.chakra-modal__body::-webkit-scrollbar-thumb:hover,
+.select__content::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  @apply bg-green-700 transition duration-200 ease-in;
 }
