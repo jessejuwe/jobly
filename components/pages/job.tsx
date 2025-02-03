@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Building2, Globe, MapPin } from "lucide-react";
+import { ArrowLeft, Building2, Clock, Globe, MapPin } from "lucide-react";
 import { Badge, Box } from "@chakra-ui/react";
+import { format } from "date-fns";
 
 import { Button } from "../ui/button";
 import { ApplicationForm } from "../jobs/application-form";
@@ -51,22 +52,26 @@ export default function JobDetails() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="w-full md:max-w-4xl md:mx-auto">
       <Button
         bg="primary.solid"
         className="btn mb-6 text-white"
         onClick={() => router.push("/")}
         variant="ghost"
       >
-        <ArrowLeft className="mr-2 h-4 w-4" />
+        <ArrowLeft className="h-4 w-4" />
         Back to Jobs
       </Button>
 
       <div className="bg-card rounded-lg shadow-sm p-6 mb-6">
-        <div className="flex items-start justify-between mb-6">
+        <div className="flex flex-wrap-reverse md:flex-wrap items-start justify-between mb-6 gap-4">
           <div>
-            <h1 className="text-3xl font-bold mb-2">{job?.title}</h1>
-            <div className="flex items-center gap-4 text-muted-foreground">
+            <h1 className="text-xl md:text-3xl font-bold mb-2">{job?.title}</h1>
+            <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
+              <Badge variant="subtle">
+                <Clock className="mr-1 h-4 w-4" />
+                {format(job?.publication_date, "MMM d, yyyy")}
+              </Badge>
               <Badge variant="subtle">
                 <Building2 className="mr-1 h-4 w-4" />
                 {job?.company_name}
