@@ -15,6 +15,7 @@
   --popover: 0 0% 100%;
   --popover-foreground: 222 47% 11%;
   --primary: 221 83% 53%;
+  --primary-background: 90 17.5% 84.31%;
   --primary-foreground: 210 40% 98%;
   --secondary: 210 40% 96%;
   --secondary-foreground: 222 47% 11%;
@@ -67,6 +68,30 @@ body {
   border-color: hsl(var(--border));
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.btn {
+  @apply px-2 font-medium;
+}
+
+.icon-btn {
+  @apply border rounded;
+}
+
+.select {
+  @apply border rounded;
+}
+
+.input {
+  @apply border focus-within:border-none rounded px-3;
+}
+
+.file-input {
+  @apply border rounded px-3;
+}
+
+.textarea {
+  @apply border focus-within:border-none rounded px-3 pt-2;
 }
 
 .job-card-enter {
@@ -133,7 +158,7 @@ body::-webkit-scrollbar-track {
 .chakra-modal__body::-webkit-scrollbar-thumb,
 .select__content::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb {
-  @apply bg-green-600 rounded;
+  @apply bg-primary rounded;
 }
 
 ::-webkit-scrollbar-thumb:hover,
