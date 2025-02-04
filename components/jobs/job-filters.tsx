@@ -13,16 +13,11 @@ import useParams from "@/hooks/useParams";
 import { useJobStore } from "@/lib/store";
 
 interface JobFiltersProps {
-  onFilterChange: (filters: {
-    category: string;
-    search: string;
-    location: string;
-  }) => void;
+  onFilterChange: (filters: { category: string; search: string }) => void;
 }
 
 export function JobFilters({ onFilterChange }: JobFiltersProps) {
   const [search, setSearch] = useState("");
-  const [location, setLocation] = useState<string[]>([]);
   const [category, setCategory] = useState<string[]>([]);
 
   const { categories } = useJobStore();
@@ -30,22 +25,11 @@ export function JobFilters({ onFilterChange }: JobFiltersProps) {
 
   const CATEGORIES = createListCollection({
     items: categories
-      ? categories.map((item, index) => ({
+      ? categories.map((item) => ({
           label: item.name,
           value: item.slug,
         }))
       : [],
-  });
-
-  const LOCATIONS = createListCollection({
-    items: [
-      { label: "Worldwide", value: "Worldwide" },
-      { label: "USA Only", value: "USA Only" },
-      { label: "Europe", value: "Europe" },
-      { label: "UK", value: "UK" },
-      { label: "Canada", value: "Canada" },
-      { label: "Australia", value: "Australia" },
-    ],
   });
 
   // Memoized debounce function
@@ -53,7 +37,7 @@ export function JobFilters({ onFilterChange }: JobFiltersProps) {
     debounce((value: string) => {
       setSearch(value);
       updateParams({ search: value });
-    }, 300),
+    }, 100),
     []
   );
 
@@ -71,19 +55,15 @@ export function JobFilters({ onFilterChange }: JobFiltersProps) {
   // Debounced filter change effect
   const debouncedFilterChange = useCallback(
     debounce(() => {
-      onFilterChange({
-        category: category[0],
-        search,
-        location: location[0] === "Worldwide" ? "" : location[0],
-      });
-    }, 300),
-    [search, location, onFilterChange]
+      onFilterChange({ category: category[0], search });
+    }, 100),
+    [category, search]
   );
 
   useEffect(() => {
     debouncedFilterChange();
     return () => debouncedFilterChange.cancel(); // Cleanup on unmount
-  }, [search, location, debouncedFilterChange]);
+  }, [search]);
 
   return (
     <div className="space-y-4 bg-card p-6 rounded-lg shadow-sm">
@@ -103,29 +83,6 @@ export function JobFilters({ onFilterChange }: JobFiltersProps) {
               value={search}
             />
           </InputGroup>
-        </Field>
-
-        <Field label="Location" width="full">
-          <SelectRoot
-            className="select"
-            collection={LOCATIONS}
-            onValueChange={({ value }) => {
-              setLocation(value);
-              updateParams({ location: value[0] });
-            }}
-            value={location}
-          >
-            <SelectTrigger clearable>
-              <SelectValueText pl={3} placeholder="Select location" />
-            </SelectTrigger>
-            <SelectContent>
-              {LOCATIONS.items.map((location) => (
-                <SelectItem item={location} key={location.value}>
-                  {location.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </SelectRoot>
         </Field>
 
         <Field label="Categories" width="full">

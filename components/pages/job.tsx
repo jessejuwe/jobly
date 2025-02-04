@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Building2, Clock, Globe, MapPin } from "lucide-react";
 import { Badge, Box } from "@chakra-ui/react";
@@ -56,7 +57,7 @@ export default function JobDetails() {
       <Button
         bg="primary.solid"
         className="btn mb-6 text-white"
-        onClick={() => router.push("/")}
+        onClick={() => router.back()}
         variant="ghost"
       >
         <ArrowLeft className="h-4 w-4" />
@@ -97,9 +98,18 @@ export default function JobDetails() {
           </Button>
         </div>
 
+        <Link
+          className="text-muted-foreground hover:underline underline-offset-4"
+          href={job?.url}
+          target="_blank"
+          referrerPolicy="no-referrer"
+        >
+          {job?.url}
+        </Link>
+
         <div
-          className="prose dark:prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: job.description }}
+          className="mt-4 prose dark:prose-invert max-w-none"
+          dangerouslySetInnerHTML={{ __html: job?.description }}
         />
       </div>
 

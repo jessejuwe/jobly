@@ -2,16 +2,16 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Globe, Heart, MapPin, Wallet } from "lucide-react";
 import Link from "next/link";
-import { Badge, Card, IconButton } from "@chakra-ui/react";
+import { Badge, Card, ClientOnly, IconButton, Skeleton, Stack } from "@chakra-ui/react"; // prettier-ignore
 
 import { ApplicationForm } from "./application-form";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { useGlobalToast } from "@/hooks/useGlobalToast";
 import { useJobStore } from "@/lib/store";
-import { Job, JobEnum, JobType } from "@/types/jobs";
+import { Job, JobEnum } from "@/types/jobs";
 import { formatJobType } from "@/utils/utils";
 
 interface JobCardProps {
@@ -84,33 +84,43 @@ export function JobCard({ job, index }: JobCardProps) {
               {job?.company_name}
             </Card.Description>
           </div>
-          <IconButton
-            aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
-            asChild
-            className="shrink-0"
-            colorPalette="red"
-            onClick={handleFavorite}
-            size="md"
-            variant="plain"
-          >
-            <Heart
-              color="red"
-              size={20}
-              className={`h-5 w-5 transition-colors ${
-                favorite ? "fill-red-500 text-red-500" : ""
-              }`}
-            />
-          </IconButton>
+          <ClientOnly fallback={<Skeleton boxSize="8" />}>
+            <IconButton
+              aria-label={
+                favorite ? "Remove from favorites" : "Add to favorites"
+              }
+              asChild
+              className="shrink-0"
+              colorPalette="red"
+              onClick={handleFavorite}
+              size="md"
+              variant="plain"
+            >
+              <Heart
+                color="red"
+                size={20}
+                className={`h-5 w-5 transition-colors ${
+                  favorite ? "fill-red-500 text-red-500" : ""
+                }`}
+              />
+            </IconButton>
+          </ClientOnly>
         </Card.Header>
         <Card.Body className="flex-1">
-          <div className="flex flex-wrap gap-2">
-            <Badge className="truncate">
+          <Stack direction="column" width="fit">
+            <Badge className="w-fit" colorPalette="gray">
+              <Wallet className="mr-1 h-4 w-4" />
+              {job?.salary || "Not Available"}
+            </Badge>
+            <Badge className="w-fit">
+              <MapPin className="mr-1 h-4 w-4" />
               {job?.candidate_required_location}
             </Badge>
-            <Badge colorPalette="secondary">
+            <Badge className="w-fit" colorPalette="secondary">
+              <Globe className="mr-1 h-4 w-4" />
               {formatJobType(job?.job_type as JobEnum)}
             </Badge>
-          </div>
+          </Stack>
         </Card.Body>
         <Card.Footer>
           <Button
