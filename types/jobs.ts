@@ -22,14 +22,16 @@ export type JobType = {
 
 export interface Job {
   id: string;
+  url: string;
   title: string;
   company_name: string;
+  company_logo: string;
+  category: string;
+  job_type: string;
+  publication_date: string;
   candidate_required_location: string;
   salary: string;
   description: string;
-  company_logo: string;
-  publication_date: string;
-  job_type: string;
 }
 
 export interface JobsResponse {

@@ -115,7 +115,7 @@ export function ApplicationForm({ job, open, setOpen }: ApplicationFormProps) {
           <DialogTitle fontSize="lg" fontWeight="bold">
             Apply
           </DialogTitle>
-          <DialogDescription>{job.title}</DialogDescription>
+          <DialogDescription>{job?.title}</DialogDescription>
         </DialogHeader>
 
         <DialogBody>

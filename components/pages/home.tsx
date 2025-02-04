@@ -1,23 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { ClientOnly } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 
 import { JobCard } from "@/components/jobs/job-card";
 import { JobFilters } from "@/components/jobs/job-filters";
 import { Button } from "@/components/ui/button";
+import { useRemoteJobs } from "@/hooks/useRemoteJobs";
 import { useJobStore } from "@/lib/store";
-import { getCategories, getJobs } from "@/services/jobs.service";
-import { Job, JobType } from "@/types/jobs";
-
-const JOBS_PER_PAGE = 12;
+import { getCategories } from "@/services/jobs.service";
+import { Job } from "@/types/jobs";
 
 type Props = {
-  page: number;
-  limit: number;
   search: string;
-  location: string;
   category: string;
 };
 
@@ -44,18 +39,21 @@ function JobCardSkeleton() {
   );
 }
 
-export default function Home({
-  page,
-  limit,
-  search,
-  location,
-  category,
-}: Props) {
-  const [filters, setFilters] = useState({ search, location, category });
+export default function Home({ search, category }: Props) {
+  const [filters, setFilters] = useState({ search, category });
 
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   const { setCategories } = useJobStore();
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch,
+    isLoading,
+  } = useRemoteJobs({ search, category });
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -67,24 +65,6 @@ export default function Home({
       setCategories(categories);
     }
   }, [categories]);
-
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    refetch,
-  } = useInfiniteQuery({
-    queryKey: ["jobs", { search, location, category }],
-    queryFn: ({ pageParam = 1 }) =>
-      getJobs({ limit, category, search, location, page: pageParam }),
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage = allPages?.length + 1;
-      return lastPage?.jobs?.length === JOBS_PER_PAGE ? nextPage : undefined;
-    },
-    initialPageParam: 1,
-  });
 
   // Intersection Observer to trigger fetchNextPage() when the user scrolls down
   useEffect(() => {
